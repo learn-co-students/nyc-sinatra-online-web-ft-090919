@@ -1,14 +1,12 @@
-require 'bundler/setup'
-Bundler.require
+$:.unshift '.'
+require 'config/environment'
 
-ENV['SINATRA_ENV'] ||= "development"
+use Rack::Static, :urls => ['/css'], :root => 'public' # Rack fix allows seeing the css folder.
 
-ActiveRecord::Base.establish_connection(
-  :adapter => "sqlite3",
-  :database => "db/nyc#{ENV['SINATRA_ENV']}.sqlite"
-)
+if defined?(ActiveRecord::Migrator) && ActiveRecord::Migrator.needs_migration?
+  raise 'Migrations are pending run `rake db:migrate` to resolve the issue.'
+end
 
-require_relative "../app/controllers/application_controller.rb"
-
-Dir[File.join(File.dirname(__FILE__), "../app/models", "*.rb")].each {|f| require f}
-Dir[File.join(File.dirname(__FILE__), "../app/controllers", "*.rb")].sort.each {|f| require f}
+use LandmarksController
+use FiguresController
+run ApplicationController
