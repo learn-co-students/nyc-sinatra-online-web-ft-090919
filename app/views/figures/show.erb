@@ -1,0 +1,30 @@
+
+
+<% if @figure %>
+
+  <h1><%= @figure.name %></h1>
+
+  <h2>Titles</h2>
+
+  <ul>
+    <% @figure.titles.each do |title| %>
+      <li><%= title.name %></li>
+    <% end %>
+  </ul>
+
+  <h2>Landmarks</h2>
+
+  <ul>
+    <% @figure.landmarks.each do |landmark| %>
+      <li><%= landmark.name %></li>
+    <% end %>
+  </ul>
+
+
+
+
+<% else %>
+
+  <h1>Figure not found!</h1>
+
+<% end %>
